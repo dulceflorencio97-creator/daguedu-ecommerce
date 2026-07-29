@@ -244,6 +244,7 @@ const Catalogo = ({ agregarACarrito, setVistaActual, user, cart = [] }) => {
                     <div className="h-48 w-full bg-rose-50 relative overflow-hidden">
                       <img
                         src={producto.imagenUrl || defaultImage}
+                        onError={(evento) => { evento.currentTarget.onerror = null; evento.currentTarget.src = defaultImage }}
                         alt={producto.nombre}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         onError={(e) => {

@@ -13,6 +13,8 @@ import { AdminConsulta } from './components/AdminConsulta'
 import { AdminProductos } from './components/AdminProductos'
 import { CheckoutForm } from './components/CheckoutForm'
 import { MisCompras } from './components/MisCompras'
+import { AdminClientes } from './components/AdminClientes'
+import { AdminProveedores } from './components/AdminProveedores'
 import { apiService } from './services/apiService'
 
 function App() {
@@ -22,6 +24,9 @@ function App() {
       return {
         username: localStorage.getItem('username') || '',
         nombre: localStorage.getItem('nombre') || localStorage.getItem('username') || '',
+        email: localStorage.getItem('email') || localStorage.getItem('username') || '',
+        direccion: localStorage.getItem('direccion') || '',
+        telefono: localStorage.getItem('telefono') || '',
         role: (() => {
           const rol = localStorage.getItem('rol') || localStorage.getItem('role') || 'ROLE_CLIENTE'
           return rol.startsWith('ROLE_') ? rol : `ROLE_${rol}`
@@ -43,6 +48,9 @@ function App() {
     const normalizedUser = {
       username: userData.username || userData.nombre || '',
       nombre: userData.nombre || userData.username || '',
+      email: userData.email || userData.username || '',
+      direccion: userData.direccion || '',
+      telefono: userData.telefono || '',
       role: (() => {
         const rol = userData.role || userData.rol || 'ROLE_CLIENTE'
         return rol.startsWith('ROLE_') ? rol : `ROLE_${rol}`
@@ -131,6 +139,10 @@ function App() {
         return <AdminConsulta user={user} tipo="categorias" setVistaActual={setVistaActual} />
       case 'admin-ventas':
         return <AdminConsulta user={user} tipo="ventas" setVistaActual={setVistaActual} />
+      case 'admin-clientes':
+        return <AdminClientes user={user} setVistaActual={setVistaActual} />
+      case 'admin-proveedores':
+        return <AdminProveedores user={user} setVistaActual={setVistaActual} />
       case 'checkout':
         return <CheckoutForm ventaActiva={ventaActiva} setCurrentTab={setVistaActual} />
       case 'compras':

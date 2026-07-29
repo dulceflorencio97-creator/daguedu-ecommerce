@@ -34,8 +34,8 @@ export const Profile = ({ user, onLogout, setVistaActual }) => {
               <p className="font-semibold text-gray-800">{user.nombre || 'Sin nombre'}</p>
             </div>
             <div className="bg-gray-50 rounded-xl p-4">
-              <p className="text-sm text-gray-500">Usuario</p>
-              <p className="font-semibold text-gray-800">{user.username}</p>
+              <p className="text-sm text-gray-500">Correo</p>
+              <p className="font-semibold text-gray-800 break-all">{user.email || user.username}</p>
             </div>
             <div className="bg-gray-50 rounded-xl p-4">
               <p className="text-sm text-gray-500">Rol</p>
@@ -45,6 +45,16 @@ export const Profile = ({ user, onLogout, setVistaActual }) => {
               <p className="text-sm text-gray-500">Estado</p>
               <p className="font-semibold text-green-600">Activo</p>
             </div>
+            {user.role === 'ROLE_CLIENTE' && <>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <p className="text-sm text-gray-500">Teléfono</p>
+                <p className="font-semibold text-gray-800">{user.telefono || 'Sin teléfono registrado'}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <p className="text-sm text-gray-500">Dirección</p>
+                <p className="font-semibold text-gray-800">{user.direccion || 'Sin dirección registrada'}</p>
+              </div>
+            </>}
           </div>
 
           <div className="flex flex-wrap gap-3 pt-2">

@@ -20,6 +20,9 @@ export const Login = ({ onLoginSuccess, onGoToRegister }) => {
             const normalizedUser = {
                 username: data.username || email,
                 nombre: data.nombre || data.username || email,
+                email: data.email || email,
+                direccion: data.direccion || '',
+                telefono: data.telefono || '',
                 role: (() => {
                     const rol = data.rol || data.role || 'ROLE_CLIENTE'
                     return rol.startsWith('ROLE_') ? rol : `ROLE_${rol}`

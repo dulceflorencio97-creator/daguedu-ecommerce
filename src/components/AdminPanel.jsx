@@ -1,4 +1,4 @@
-import { Boxes, ClipboardList, LayoutDashboard, Tags } from 'lucide-react'
+import { Boxes, Building2, ClipboardList, LayoutDashboard, Tags, Users } from 'lucide-react'
 
 export const AdminPanel = ({ user, setVistaActual }) => {
   if (user?.role !== 'ROLE_ADMIN') {
@@ -9,6 +9,8 @@ export const AdminPanel = ({ user, setVistaActual }) => {
     { icon: Boxes, titulo: 'Productos', texto: 'Lista, consulta detalles y agrega productos.', vista: 'admin-productos' },
     { icon: Tags, titulo: 'Categorías', texto: 'Consulta las categorías registradas.', vista: 'admin-categorias' },
     { icon: ClipboardList, titulo: 'Ventas', texto: 'Lista y consulta el detalle de las compras realizadas.', vista: 'admin-ventas' },
+    { icon: Users, titulo: 'Clientes', texto: 'Consulta clientes y sus compras realizadas.', vista: 'admin-clientes' },
+    { icon: Building2, titulo: 'Proveedores', texto: 'Consulta los proveedores registrados.', vista: 'admin-proveedores' },
   ]
 
   return (

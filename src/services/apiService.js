@@ -70,7 +70,10 @@ export const apiService = {
             localStorage.setItem('token', data.token),
             localStorage.setItem('username', data.username),
             localStorage.setItem('nombre', data.nombre),
-            localStorage.setItem('rol', data.rol)
+            localStorage.setItem('rol', data.rol),
+            localStorage.setItem('email', data.email || data.username),
+            localStorage.setItem('direccion', data.direccion || ''),
+            localStorage.setItem('telefono', data.telefono || '')
         }
         return data;
     },
@@ -80,7 +83,10 @@ export const apiService = {
         localStorage.removeItem('token'),
         localStorage.removeItem('username'),
         localStorage.removeItem('nombre'),
-        localStorage.removeItem('rol')
+        localStorage.removeItem('rol'),
+        localStorage.removeItem('email'),
+        localStorage.removeItem('direccion'),
+        localStorage.removeItem('telefono')
     },
 
     // ---------------------------------------------------------
@@ -96,7 +102,7 @@ export const apiService = {
 
     getProducto: async (id) => {
         const response = await fetch(
-            API_URL + "productos/" + id
+            API_URL + "producto/" + id
         );
         return await handleResponse(response);
     },
@@ -115,7 +121,7 @@ export const apiService = {
 
     actualizarProducto: async (id, producto) => {
         const response = await fetch(
-            API_URL + "productos/" + id,
+            API_URL + "producto/" + id,
             {
                 method: "PUT",
                 body: JSON.stringify(producto),
@@ -126,8 +132,9 @@ export const apiService = {
     },
 
     eliminarProducto: async (id) => {
+        if (!window.confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')) return null;
         const response = await fetch(
-            API_URL + "productos/" + id,
+            API_URL + "producto/" + id,
             {
                 method: "DELETE"
             }
@@ -148,14 +155,14 @@ export const apiService = {
 
     getCategoria: async (id) => {
         const response = await fetch(
-            API_URL + "categorias/" + id
+            API_URL + "categoria/" + id
         );
         return await handleResponse(response);
     },
 
     crearCategoria: async (categoria) => {
         const response = await fetch(
-            API_URL + "categorias/",
+            API_URL + "categoria/",
             {
                 method: "POST",
                 body: JSON.stringify(categoria),
@@ -167,7 +174,7 @@ export const apiService = {
 
     actualizarCategoria: async (id, categoria) => {
         const response = await fetch(
-            API_URL + "categorias/" + id,
+            API_URL + "categoria/" + id,
             {
                 method: "PUT",
                 body: JSON.stringify(categoria),
@@ -178,8 +185,9 @@ export const apiService = {
     },
 
     eliminarCategoria: async (id) => {
+        if (!window.confirm('¿Eliminar esta categoría?')) return null;
         const response = await fetch(
-            API_URL + "categorias/" + id,
+            API_URL + "categoria/" + id,
             {
                 method: "DELETE"
             }
@@ -193,14 +201,14 @@ export const apiService = {
     // ---------------------------------------------------------
     getClientes: async () => {
         const response = await fetch(
-            API_URL + "clientes/"
+            API_URL + "cliente/"
         );
         return await handleResponse(response);
     },
 
     getCliente: async (id) => {
         const response = await fetch(
-            API_URL + "clientes/" + id
+            API_URL + "cliente/" + id
         );
         return await handleResponse(response);
     },
@@ -245,14 +253,14 @@ export const apiService = {
     // ---------------------------------------------------------
     getProveedores: async () => {
         const response = await fetch(
-            API_URL + "proveedores/"
+            API_URL + "proveedor/"
         );
         return await handleResponse(response);
     },
 
     getProveedor: async (id) => {
         const response = await fetch(
-            API_URL + "proveedores/" + id
+            API_URL + "proveedor/" + id
         );
         return await handleResponse(response);
     },
