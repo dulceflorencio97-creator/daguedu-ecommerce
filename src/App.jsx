@@ -75,6 +75,19 @@ function App() {
     setlistaCarOpen(false)
   }
 
+  const actualizarUsuarioActivo = (updatedUser) => {
+    setUser(updatedUser)
+    localStorage.setItem('nombre', updatedUser.nombre || '')
+    localStorage.setItem('email', updatedUser.email || updatedUser.username || '')
+    localStorage.setItem('telefono', updatedUser.telefono || '')
+    localStorage.setItem('direccion', updatedUser.direccion || '')
+  }
+
+  const terminarCompraPendiente = (venta) => {
+    setVentaActiva(venta)
+    setVistaActual('checkout')
+  }
+
   const agregarACarrito = (producto) => {
     if (!user) { setVistaActual('login'); return }
     if (user.role !== 'ROLE_CLIENTE') return
@@ -128,7 +141,7 @@ function App() {
       case 'login':
         return <Login onLoginSuccess={handleLogSucces} onGoToRegister={() => setVistaActual('register')} />
       case 'profile':
-        return <Profile user={user} onLogout={handLeLogout} setVistaActual={setVistaActual} />
+        return <Profile user={user} onLogout={handLeLogout} setVistaActual={setVistaActual} onUserUpdated={actualizarUsuarioActivo} />
       case 'admin-panel':
         return <AdminPanel user={user} setVistaActual={setVistaActual} />
       case 'nuevo-producto':
@@ -146,7 +159,7 @@ function App() {
       case 'checkout':
         return <CheckoutForm ventaActiva={ventaActiva} setCurrentTab={setVistaActual} />
       case 'compras':
-        return <MisCompras user={user} setVistaActual={setVistaActual} />
+        return <MisCompras user={user} setVistaActual={setVistaActual} onTerminarCompra={terminarCompraPendiente} />
       case 'cliente-panel':
       case 'miscompras':
         return <ClientePanel user={user} setVistaActual={setVistaActual} openCart={() => setlistaCarOpen(true)} />

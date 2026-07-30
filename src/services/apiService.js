@@ -215,7 +215,7 @@ export const apiService = {
 
     crearCliente: async (cliente) => {
         const response = await fetch(
-            API_URL + "clientes/",
+            API_URL + "cliente/",
             {
                 method: "POST",
                 body: JSON.stringify(cliente),
@@ -227,7 +227,7 @@ export const apiService = {
 
     actualizarCliente: async (id, cliente) => {
         const response = await fetch(
-            API_URL + "clientes/" + id,
+            API_URL + "cliente/" + id,
             {
                 method: "PUT",
                 body: JSON.stringify(cliente),
@@ -239,7 +239,7 @@ export const apiService = {
 
     eliminarCliente: async (id) => {
         const response = await fetch(
-            API_URL + "clientes/" + id,
+            API_URL + "cliente/" + id,
             {
                 method: "DELETE"
             }
@@ -267,7 +267,7 @@ export const apiService = {
 
     crearProveedor: async (proveedor) => {
         const response = await fetch(
-            API_URL + "proveedores/",
+            API_URL + "proveedor/",
             {
                 method: "POST",
                 body: JSON.stringify(proveedor),
@@ -279,7 +279,7 @@ export const apiService = {
 
     actualizarProveedor: async (id, proveedor) => {
         const response = await fetch(
-            API_URL + "proveedores/" + id,
+            API_URL + "proveedor/" + id,
             {
                 method: "PUT",
                 body: JSON.stringify(proveedor),
@@ -291,7 +291,7 @@ export const apiService = {
 
     eliminarProveedor: async (id) => {
         const response = await fetch(
-            API_URL + "proveedores/" + id,
+            API_URL + "proveedor/" + id,
             {
                 method: "DELETE"
             }
@@ -326,6 +326,34 @@ export const apiService = {
                 headers: getHeaders()
             }
         );
+        return await handleResponse(response);
+    },
+
+    actualizarUsuario: async (id, userData) => {
+        const response = await fetch(API_URL + 'auth/usuarios/' + id, {
+            method: 'PUT', headers: getHeaders(), body: JSON.stringify(userData)
+        });
+        return await handleResponse(response);
+    },
+
+    eliminarUsuario: async (id) => {
+        const response = await fetch(API_URL + 'auth/usuarios/' + id, {
+            method: 'DELETE', headers: getHeaders()
+        });
+        return await handleResponse(response);
+    },
+
+    getUsuarios: async () => {
+        const response = await fetch(API_URL + 'auth/usuarios', { headers: getHeaders() });
+        return await handleResponse(response);
+    },
+
+    actualizarPerfil: async (perfil) => {
+        const response = await fetch(API_URL + 'auth/perfil', {
+            method: 'PUT',
+            headers: getHeaders(),
+            body: JSON.stringify(perfil),
+        });
         return await handleResponse(response);
     },
 
