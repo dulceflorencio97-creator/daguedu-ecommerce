@@ -268,7 +268,7 @@ const Catalogo = ({ agregarACarrito, setVistaActual, user, cart = [], compraEnEd
                         {/* Proveedor */}
                         {producto.proveedor && (
                           <div className="text-xs text-rose-600 font-semibold flex items-center gap-1">
-                            <i className="fa-solid fa-truck text-amber-500"></i> {producto.proveedor.nombreEmpresa}
+                            <i className="fa-solid fa-truck text-amber-500"></i> {producto.proveedor.nombre || producto.proveedor.nombreEmpresa}
                           </div>
                         )}
                         <h3 className="font-bold text-rose-950 text-base line-clamp-1 group-hover:text-rose-700 transition-colors">
