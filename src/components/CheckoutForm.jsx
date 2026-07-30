@@ -36,7 +36,7 @@ const PaymentForm = ({ venta, onPaymentSuccess, setCurrentTab }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!stripe || !elements || !clientSecret) {
+    if (!stripe || !elements) {
       setError('Stripe no está inicializado o la clave es incorrecta. Usa el Simulador de Pago abajo.');
       return;
     }
@@ -46,7 +46,9 @@ const PaymentForm = ({ venta, onPaymentSuccess, setCurrentTab }) => {
 
     try {
       // 2. Confirmar pago en Stripe
-      const result = await stripe.confirmCardPayment(clientSecret, {
+      const pago = clientSecret ? { clientSecret } : await apiService.crearIntencionPago(venta.id);
+      if (!pago?.clientSecret) throw new Error('No fue posible preparar el pago con Stripe.');
+      const result = await stripe.confirmCardPayment(pago.clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement),
         }
@@ -89,12 +91,13 @@ const PaymentForm = ({ venta, onPaymentSuccess, setCurrentTab }) => {
         </div>
       )}
 
+      {/* La tarjeta se captura directamente en el formulario seguro de Stripe.
       <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-950">
         <div className="flex items-center gap-2 font-extrabold"><CreditCard className="w-5 text-sky-700"/>Tarjeta de prueba Stripe</div>
         <p className="mt-2">Número: <strong>4242 4242 4242 4242</strong></p>
         <p>Vencimiento: <strong>12/34</strong> · CVC: <strong>cualquier 3 dígitos</strong></p>
         <p className="mt-2 text-xs text-sky-800">Solo funciona con las claves <code>pk_test</code> y <code>sk_test</code>. No uses datos de una tarjeta real.</p>
-      </div>
+      </div> */}
 
       {/* Formulario Stripe */}
       <form onSubmit={handleSubmit} className="bg-rose-50 p-5 rounded-2xl border border-rose-200 space-y-4">
@@ -113,7 +116,7 @@ const PaymentForm = ({ venta, onPaymentSuccess, setCurrentTab }) => {
 
         <button
           type="submit"
-          disabled={!stripe || procesando || !clientSecret}
+          disabled={!stripe || procesando}
           className="w-full bg-amber-700 hover:bg-amber-600 text-white p-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {procesando ? (
