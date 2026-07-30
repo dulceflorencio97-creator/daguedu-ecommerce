@@ -41,6 +41,7 @@ function App() {
   const [ventaActiva, setVentaActiva] = useState(null)
   const [adminSubtab, setAdminSubtab] = useState('productos')
   const [listaCarOpen, setlistaCarOpen] = useState(false)
+  const [guardandoPendiente, setGuardandoPendiente] = useState(false)
   const [carCount, setCarCount] = useState(0)
   const cantidadCarrito = cart.reduce((total, item) => total + item.cantidad, 0)
 
@@ -117,6 +118,29 @@ function App() {
     }
   }
 
+  const cerrarYGuardarPendiente = async () => {
+    if (guardandoPendiente) return
+    if (!cart.length) {
+      setlistaCarOpen(false)
+      return
+    }
+
+    try {
+      setGuardandoPendiente(true)
+      const venta = await apiService.procesarVenta(
+        { detalles: cart.map((item) => ({ producto: { id: item.id }, cantidad: item.cantidad })) },
+        user.username
+      )
+      setVentaActiva(venta)
+      setCart([])
+      setlistaCarOpen(false)
+    } catch (error) {
+      alert(error.message || 'No se pudo guardar la compra pendiente.')
+    } finally {
+      setGuardandoPendiente(false)
+    }
+  }
+
   const _stateRefs = {
     cart,
     setCart,
@@ -183,7 +207,7 @@ function App() {
       <main className="grow pb-12">
         {vistaContenido()}
       </main>
-      <CartDrawer abierto={listaCarOpen} items={cart} onClose={() => setlistaCarOpen(false)} onCantidad={cambiarCantidad} onEliminar={eliminarDelCarrito} onCheckout={iniciarCheckout} />
+      <CartDrawer abierto={listaCarOpen} items={cart} onClose={cerrarYGuardarPendiente} onCantidad={cambiarCantidad} onEliminar={eliminarDelCarrito} onCheckout={iniciarCheckout} guardando={guardandoPendiente} />
       <Footer />
     </div>
   )
