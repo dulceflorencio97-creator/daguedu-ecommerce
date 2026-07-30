@@ -408,9 +408,10 @@ export const apiService = {
 
     eliminarVenta: async (id) => {
         const response = await fetch(
-            API_URL + "ventas/" + id,
+            API_URL + "venta/" + id,
             {
-                method: "DELETE"
+                method: "DELETE",
+                headers: getHeaders()
             }
         );
         return await handleResponse(response);

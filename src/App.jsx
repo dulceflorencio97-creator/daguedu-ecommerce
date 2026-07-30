@@ -104,7 +104,6 @@ function App() {
       if (existe) return actual.map((item) => item.id === producto.id ? { ...item, cantidad: Math.min(item.cantidad + 1, producto.stock) } : item)
       return [...actual, { ...producto, cantidad: 1 }]
     })
-    setlistaCarOpen(true)
   }
 
   const cambiarCantidad = (id, cantidad) => {

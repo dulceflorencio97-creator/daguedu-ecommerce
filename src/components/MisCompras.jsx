@@ -60,6 +60,17 @@ export const MisCompras = ({ user, setVistaActual, onTerminarCompra, onAgregarPr
     }
   }
 
+  const eliminarCompraPendiente = async (compra) => {
+    if (!window.confirm(`¿Eliminar la compra pendiente #${compra.id}? Sus productos se devolverán al almacén.`)) return
+    try {
+      await apiService.eliminarVenta(compra.id)
+      setCompras((actuales) => actuales.filter((venta) => venta.id !== compra.id))
+      if (seleccionada?.id === compra.id) setSeleccionada(null)
+    } catch (err) {
+      alert(err.message || 'No se pudo eliminar la compra pendiente.')
+    }
+  }
+
   useEffect(() => {
     apiService.getVentas()
       .then((ventas) => setCompras((Array.isArray(ventas) ? ventas : []).filter((venta) => venta.cliente?.email === user?.email || venta.cliente?.email === user?.username)))
@@ -82,7 +93,7 @@ export const MisCompras = ({ user, setVistaActual, onTerminarCompra, onAgregarPr
             const pendiente = compra.estadoPago !== 'PAGADO'
             return <article key={compra.id} className="border-b border-rose-100 py-4 flex flex-wrap items-center justify-between gap-4">
               <div><p className="font-bold text-rose-950">Compra #{compra.id}</p><p className="text-sm text-rose-700">{compra.fecha ? new Date(compra.fecha).toLocaleString('es-MX') : 'Fecha no disponible'}</p></div>
-              <div className="flex items-center gap-3"><div className="text-right"><p className="font-bold text-amber-800">{money(compra.total)}</p><p className={`text-xs font-bold ${pendiente ? 'text-amber-700' : 'text-green-600'}`}>{compra.estadoPago || 'PENDIENTE'}</p></div>{pendiente && <button onClick={() => onTerminarCompra(compra)} className="inline-flex items-center gap-1 rounded-lg bg-amber-700 px-3 py-2 text-white font-bold text-sm"><CreditCard className="w-4 h-4" />Terminar</button>}<button onClick={() => setSeleccionada(compra)} className="p-2 rounded-lg text-amber-800 hover:bg-amber-100" title="Ver detalle"><Eye className="w-5 h-5" /></button></div>
+              <div className="flex items-center gap-3"><div className="text-right"><p className="font-bold text-amber-800">{money(compra.total)}</p><p className={`text-xs font-bold ${pendiente ? 'text-amber-700' : 'text-green-600'}`}>{compra.estadoPago || 'PENDIENTE'}</p></div>{pendiente && <button onClick={() => onTerminarCompra(compra)} className="inline-flex items-center gap-1 rounded-lg bg-amber-700 px-3 py-2 text-white font-bold text-sm"><CreditCard className="w-4 h-4" />Terminar</button>}{pendiente && <button onClick={() => eliminarCompraPendiente(compra)} className="p-2 rounded-lg text-rose-700 hover:bg-rose-50" title="Eliminar compra pendiente"><Trash2 className="w-5 h-5" /></button>}<button onClick={() => setSeleccionada(compra)} className="p-2 rounded-lg text-amber-800 hover:bg-amber-100" title="Ver detalle"><Eye className="w-5 h-5" /></button></div>
             </article>
           })}
           <button onClick={() => setVistaActual('catalogo')} className="mt-6 px-4 py-2 rounded-xl bg-amber-700 text-white font-bold">Volver al catalogo</button>
