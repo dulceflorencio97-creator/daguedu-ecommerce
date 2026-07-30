@@ -364,6 +364,22 @@ export const apiService = {
         return await handleResponse(response);
     },
 
+    agregarProductosVenta: async (idVenta, detalles) => {
+        const response = await fetch(API_URL + `venta/${idVenta}/agregar-productos`, {
+            method: 'POST',
+            body: JSON.stringify({ detalles }),
+            headers: getHeaders()
+        });
+        return await handleResponse(response);
+    },
+
+    eliminarProductoDeVenta: async (idVenta, idDetalle) => {
+        const response = await fetch(API_URL + `venta/${idVenta}/detalles/${idDetalle}`, {
+            method: 'DELETE', headers: getHeaders()
+        });
+        return await handleResponse(response);
+    },
+
     crearIntencionPago: async (idVenta) => {
         const response = await fetch(API_URL + 'pagos/crear-intencion', {
             method: 'POST', body: JSON.stringify({ idVenta, moneda: 'mxn' }), headers: getHeaders()

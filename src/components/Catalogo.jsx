@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { apiService } from '../services/apiService'
 import { Search, Filter, ShoppingCart, Info, AlertTriangle, Settings } from 'lucide-react'
 
-const Catalogo = ({ agregarACarrito, setVistaActual, user, cart = [] }) => {
+const Catalogo = ({ agregarACarrito, setVistaActual, user, cart = [], compraEnEdicion }) => {
   const [productos, setProductos] = useState([])
   const [categorias, setCategorias] = useState([])
   const [carga, setCarga] = useState(true)
@@ -150,6 +150,9 @@ const Catalogo = ({ agregarACarrito, setVistaActual, user, cart = [] }) => {
                   <p className="mt-4 inline-flex rounded-full bg-white/15 px-3 py-1.5 text-sm font-semibold">
                     Sesión iniciada: {user.nombre || user.username} ({isAdmin ? 'Administrador' : 'Cliente'})
                   </p>
+                )}
+                {compraEnEdicion && (
+                  <p className="mt-3 text-sm font-semibold text-amber-100">Estas agregando productos a la compra pendiente #{compraEnEdicion.id}.</p>
                 )}
                 </div>
                 <div className="absolute right-0 bottom-0 top-0 opacity-10 flex items-center justify-center p-8">

@@ -39,6 +39,7 @@ function App() {
   const [cart, setCart] = useState([])
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [ventaActiva, setVentaActiva] = useState(null)
+  const [ventaPendienteEdicion, setVentaPendienteEdicion] = useState(null)
   const [adminSubtab, setAdminSubtab] = useState('productos')
   const [listaCarOpen, setlistaCarOpen] = useState(false)
   const [guardandoPendiente, setGuardandoPendiente] = useState(false)
@@ -89,6 +90,12 @@ function App() {
     setVistaActual('checkout')
   }
 
+  const agregarProductosACompraPendiente = (venta) => {
+    setVentaPendienteEdicion(venta)
+    setCart([])
+    setVistaActual('catalogo')
+  }
+
   const agregarACarrito = (producto) => {
     if (!user) { setVistaActual('login'); return }
     if (user.role !== 'ROLE_CLIENTE') return
@@ -108,9 +115,13 @@ function App() {
 
   const iniciarCheckout = async () => {
     try {
-      const venta = await apiService.procesarVenta({ detalles: cart.map((item) => ({ producto: { id: item.id }, cantidad: item.cantidad })) }, user.username)
+      const detalles = cart.map((item) => ({ producto: { id: item.id }, cantidad: item.cantidad }))
+      const venta = ventaPendienteEdicion
+        ? (detalles.length ? await apiService.agregarProductosVenta(ventaPendienteEdicion.id, detalles) : ventaPendienteEdicion)
+        : await apiService.procesarVenta({ detalles }, user.username)
       setVentaActiva(venta)
       setCart([])
+      setVentaPendienteEdicion(null)
       setlistaCarOpen(false)
       setVistaActual('checkout')
     } catch (error) {
@@ -122,17 +133,19 @@ function App() {
     if (guardandoPendiente) return
     if (!cart.length) {
       setlistaCarOpen(false)
+      setVentaPendienteEdicion(null)
       return
     }
 
     try {
       setGuardandoPendiente(true)
-      const venta = await apiService.procesarVenta(
-        { detalles: cart.map((item) => ({ producto: { id: item.id }, cantidad: item.cantidad })) },
-        user.username
-      )
+      const detalles = cart.map((item) => ({ producto: { id: item.id }, cantidad: item.cantidad }))
+      const venta = ventaPendienteEdicion
+        ? await apiService.agregarProductosVenta(ventaPendienteEdicion.id, detalles)
+        : await apiService.procesarVenta({ detalles }, user.username)
       setVentaActiva(venta)
       setCart([])
+      setVentaPendienteEdicion(null)
       setlistaCarOpen(false)
     } catch (error) {
       alert(error.message || 'No se pudo guardar la compra pendiente.')
@@ -183,13 +196,13 @@ function App() {
       case 'checkout':
         return <CheckoutForm ventaActiva={ventaActiva} setCurrentTab={setVistaActual} />
       case 'compras':
-        return <MisCompras user={user} setVistaActual={setVistaActual} onTerminarCompra={terminarCompraPendiente} />
+        return <MisCompras user={user} setVistaActual={setVistaActual} onTerminarCompra={terminarCompraPendiente} onAgregarProductos={agregarProductosACompraPendiente} />
       case 'cliente-panel':
       case 'miscompras':
         return <ClientePanel user={user} setVistaActual={setVistaActual} openCart={() => setlistaCarOpen(true)} />
       case 'catalogo':
       default:
-        return <Catalogo setVistaActual={setVistaActual} user={user} cart={cart} agregarACarrito={agregarACarrito} />
+        return <Catalogo setVistaActual={setVistaActual} user={user} cart={cart} agregarACarrito={agregarACarrito} compraEnEdicion={ventaPendienteEdicion} />
     }
   }
 
@@ -207,7 +220,7 @@ function App() {
       <main className="grow pb-12">
         {vistaContenido()}
       </main>
-      <CartDrawer abierto={listaCarOpen} items={cart} onClose={cerrarYGuardarPendiente} onCantidad={cambiarCantidad} onEliminar={eliminarDelCarrito} onCheckout={iniciarCheckout} guardando={guardandoPendiente} />
+      <CartDrawer abierto={listaCarOpen} items={cart} onClose={cerrarYGuardarPendiente} onCantidad={cambiarCantidad} onEliminar={eliminarDelCarrito} onCheckout={iniciarCheckout} guardando={guardandoPendiente} compraEnEdicion={ventaPendienteEdicion} />
       <Footer />
     </div>
   )

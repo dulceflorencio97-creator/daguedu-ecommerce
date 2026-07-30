@@ -1,6 +1,6 @@
 import { Minus, Plus, ShoppingCart, Trash2, X } from 'lucide-react'
 
-export const CartDrawer = ({ abierto, items, onClose, onCantidad, onEliminar, onCheckout, guardando }) => {
+export const CartDrawer = ({ abierto, items, onClose, onCantidad, onEliminar, onCheckout, guardando, compraEnEdicion }) => {
   if (!abierto) return null
 
   const total = items.reduce((suma, item) => suma + Number(item.precio || 0) * item.cantidad, 0)
@@ -10,7 +10,7 @@ export const CartDrawer = ({ abierto, items, onClose, onCantidad, onEliminar, on
       <button aria-label="Cerrar carrito" onClick={onClose} disabled={guardando} className="absolute inset-0 bg-rose-950/35 backdrop-blur-[1px] disabled:cursor-wait" />
       <aside className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl flex flex-col">
         <header className="bg-rose-950 text-amber-100 px-5 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-2"><ShoppingCart className="w-5 h-5 text-amber-300" /><h2 className="font-bold">Mi carrito</h2></div>
+          <div className="flex items-center gap-2"><ShoppingCart className="w-5 h-5 text-amber-300" /><h2 className="font-bold">{compraEnEdicion ? `Agregar a compra #${compraEnEdicion.id}` : 'Mi carrito'}</h2></div>
           <button onClick={onClose} disabled={guardando} className="p-1 hover:bg-amber-900 rounded-lg disabled:opacity-60"><X className="w-5 h-5" /></button>
         </header>
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
