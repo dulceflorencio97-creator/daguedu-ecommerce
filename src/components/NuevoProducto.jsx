@@ -43,7 +43,14 @@ export const NuevoProducto = ({ user, setVistaActual }) => {
       <textarea name="descripcion" value={form.descripcion} onChange={cambiar} placeholder="Descripción" className="p-3 rounded-xl border border-rose-200" />
       <select required name="categoriaId" value={form.categoriaId} onChange={cambiar} className="p-3 rounded-xl border border-rose-200"><option value="">Selecciona una categoría</option>{categorias.map((categoria) => <option key={categoria.id} value={categoria.id}>{categoria.nombre}</option>)}</select>
       <select required name="proveedorId" value={form.proveedorId} onChange={cambiar} className="p-3 rounded-xl border border-rose-200"><option value="">Selecciona un proveedor</option>{proveedores.map((proveedor) => <option key={proveedor.id} value={proveedor.id}>{proveedor.nombre}</option>)}</select>
-      <div className="grid grid-cols-2 gap-4"><input required min="0" step="0.01" type="number" name="precio" value={form.precio} onChange={cambiar} placeholder="Precio" className="p-3 rounded-xl border border-rose-200" /><input required min="0" type="number" name="stock" value={form.stock} onChange={cambiar} placeholder="Stock" className="p-3 rounded-xl border border-rose-200" /></div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <label className="grid gap-2 text-sm font-bold text-slate-700">Precio (MXN)
+          <input required min="0" step="0.01" type="number" name="precio" value={form.precio} onChange={cambiar} placeholder="Ej. 8999.00" className="p-3 rounded-xl border border-rose-200 font-normal" />
+        </label>
+        <label className="grid gap-2 text-sm font-bold text-slate-700">Stock disponible
+          <input required min="0" type="number" name="stock" value={form.stock} onChange={cambiar} placeholder="Ej. 13" className="p-3 rounded-xl border border-rose-200 font-normal" />
+        </label>
+      </div>
       <input name="imagenUrl" type="url" value={form.imagenUrl} onChange={cambiar} placeholder="URL de imagen (opcional)" className="p-3 rounded-xl border border-rose-200" />
       <div className="flex gap-3"><button disabled={estado.cargando} className="grow py-3 rounded-xl bg-amber-700 text-white font-bold">{estado.cargando ? 'Guardando...' : 'Guardar producto'}</button><button type="button" onClick={() => setVistaActual('admin-productos')} className="px-4 rounded-xl border border-rose-200 text-rose-800 font-bold">Volver</button></div>
     </form>
