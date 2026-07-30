@@ -45,10 +45,17 @@ export const NuevoProducto = ({ user, setVistaActual }) => {
       <select required name="proveedorId" value={form.proveedorId} onChange={cambiar} className="p-3 rounded-xl border border-rose-200"><option value="">Selecciona un proveedor</option>{proveedores.map((proveedor) => <option key={proveedor.id} value={proveedor.id}>{proveedor.nombre}</option>)}</select>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className="grid gap-2 text-sm font-bold text-slate-700">Precio (MXN)
-          <input required min="0" step="0.01" type="number" name="precio" value={form.precio} onChange={cambiar} placeholder="Ej. 8999.00" className="p-3 rounded-xl border border-rose-200 font-normal" />
+          <div className="flex overflow-hidden rounded-xl border border-rose-200 bg-white focus-within:border-amber-600">
+            <span className="flex items-center border-r border-rose-100 bg-amber-50 px-4 text-lg font-extrabold text-amber-800">$</span>
+            <input required min="0" step="0.01" type="number" name="precio" value={form.precio} onChange={cambiar} placeholder="8999.00" className="min-w-0 grow p-3 font-normal outline-none" />
+            <span className="flex items-center bg-amber-50 px-3 text-xs font-bold text-amber-800">MXN</span>
+          </div>
         </label>
         <label className="grid gap-2 text-sm font-bold text-slate-700">Stock disponible
-          <input required min="0" type="number" name="stock" value={form.stock} onChange={cambiar} placeholder="Ej. 13" className="p-3 rounded-xl border border-rose-200 font-normal" />
+          <div className="flex overflow-hidden rounded-xl border border-rose-200 bg-white focus-within:border-amber-600">
+            <input required min="0" type="number" name="stock" value={form.stock} onChange={cambiar} placeholder="13" className="min-w-0 grow p-3 font-normal outline-none" />
+            <span className="flex items-center border-l border-rose-100 bg-amber-50 px-3 text-xs font-bold text-amber-800">UNIDADES</span>
+          </div>
         </label>
       </div>
       <input name="imagenUrl" type="url" value={form.imagenUrl} onChange={cambiar} placeholder="URL de imagen (opcional)" className="p-3 rounded-xl border border-rose-200" />
