@@ -89,6 +89,13 @@ const PaymentForm = ({ venta, onPaymentSuccess, setCurrentTab }) => {
         </div>
       )}
 
+      <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-950">
+        <div className="flex items-center gap-2 font-extrabold"><CreditCard className="w-5 text-sky-700"/>Tarjeta de prueba Stripe</div>
+        <p className="mt-2">Número: <strong>4242 4242 4242 4242</strong></p>
+        <p>Vencimiento: <strong>12/34</strong> · CVC: <strong>cualquier 3 dígitos</strong></p>
+        <p className="mt-2 text-xs text-sky-800">Solo funciona con las claves <code>pk_test</code> y <code>sk_test</code>. No uses datos de una tarjeta real.</p>
+      </div>
+
       {/* Formulario Stripe */}
       <form onSubmit={handleSubmit} className="bg-rose-50 p-5 rounded-2xl border border-rose-200 space-y-4">
         <label className="block text-sm font-semibold text-gray-700">Tarjeta de Crédito o Débito</label>
